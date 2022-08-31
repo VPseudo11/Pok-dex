@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import Home from './components/Home'
 import Pokedex from './components/Pokedex'
 import PokemonDetails from './components/PokemonDetails'
-
 import ProtectedRoutes from './components/ProtectedRoutes'
 
 function App() {

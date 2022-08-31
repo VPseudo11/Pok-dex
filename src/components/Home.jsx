@@ -1,13 +1,31 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
+import { useNavigate } from 'react-router-dom'
+import { setNameTrainer } from '../store/slice/nameTrainer.slice'
 
 import PikachuGif from './../assets/Pikachu.gif'
-import Pokeball from './../assets/Pokeball (1).gif'
+import Pokeball from './../assets/Pokeball.gif'
 
 const Home = () => {
-    const clickbutton = () => {
-        console.log('click')
+
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+    const handleSubmit = e => {
+        e.preventDefault()
+        const inputValue = e.target.name.value.trim()
+
+        if (inputValue.length !== 0) {
+            dispatch(setNameTrainer(inputValue))
+            navigate('/pokedex')
+        } else {
+            alert('Para acceder a la pokedex debes ingresar tu nombre')
+        }
+
+        e.target.name.value = ''
     }
+
     return (
         <HomeContainer>
             <h1><span>Poké</span>dex</h1>
@@ -17,13 +35,13 @@ const Home = () => {
             </FirstSection>
             <SecondSection>
                 <h2>Give me your name to start</h2>
-                <DivInput>
-                    <InputContainer type="text" />
-                    <ButtonContainer onClick={clickbutton}>
+                <FormInput onSubmit={handleSubmit}>
+                    <InputContainer id='name' type="text" />
+                    <ButtonContainer>
                         <img src={Pokeball} alt="" />
                         <h2><span>G</span>o</h2>
                     </ButtonContainer>
-                </DivInput>
+                </FormInput>
             </SecondSection>
         </HomeContainer>
     )
@@ -92,7 +110,7 @@ const SecondSection = styled.section`
     }
 `
 
-const DivInput = styled.div`
+const FormInput = styled.form`
     margin-top: 15px;
     display: flex;
     align-items: center;
