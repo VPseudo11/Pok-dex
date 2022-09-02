@@ -50,7 +50,7 @@ const Home = () => {
 const HomeContainer = styled.div`
     max-width: 1200px;
     width: 100%;
-    height: 100vh;
+    margin: 25% 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -72,7 +72,7 @@ const HomeContainer = styled.div`
         }
         @media (max-width: 768px){
         font-size: 3.3rem;
-    }
+        }
     }
 `
 
