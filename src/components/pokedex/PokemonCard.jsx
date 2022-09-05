@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components';
 import StatsPokemon from './StatsPokemon';
 
+import Pokeball from './../../assets/Pokeball.gif'
+
 const PokemonCard = ({ url }) => {
     const [pokemon, setPokemon] = useState(null)
     const [color, setColor] = useState(null)
@@ -33,11 +35,12 @@ const PokemonCard = ({ url }) => {
     const handleClick =()=>{
         navigate(`/pokedex/${pokemon.name}`)
     }
+
     return (
         <CardContainer color={color} onClick={handleClick}>
             <HeaderCard>
                 <DivColorGradient color={color}></DivColorGradient>
-                <img src={pokemon?.sprites.other['official-artwork']["front_default"]} alt="" />
+                <img src={pokemon?.sprites.other['official-artwork']["front_default"]} alt='Pokemon not yet caught on camera' />
             </HeaderCard>
             <SectionContainer>
                 <NamePokemon color={color}>{pokemon?.name}</NamePokemon>
@@ -70,6 +73,8 @@ const CardContainer = styled.article`
     border: 3px solid red;
     width: 290px;
     border-radius: 36px;
+    transition: all .5s ease;
+    cursor: pointer;
     
     border-color:${props =>
         props.color === 'black' ? 'rgba(0, 0, 0, .9)' :
@@ -87,6 +92,7 @@ const CardContainer = styled.article`
     &:hover{
         transform: translate(-10px, -10px);
         transition: all .5s ease;
+        
         box-shadow:${props =>
         props.color === 'black' ? '9px 9px 12px 0px rgba(0, 0, 0, .6)' :
             props.color === 'blue' ? '9px 9px 12px 0px rgba(0, 0, 255, .6)' :
@@ -108,6 +114,7 @@ const HeaderCard = styled.header`
     width: 100%;
     height: 300px;
     position: relative;
+
     &>img{
         width: 200px;
         position: absolute;
@@ -121,6 +128,7 @@ const DivColorGradient = styled.div`
     width: 100%;
     height: 100%;
     position: absolute;
+
     background: ${props =>
         props.color === 'black' ? 'linear-gradient(180deg, black, white 75%)' :
             props.color === 'blue' ? 'linear-gradient(180deg, blue, white 75%)' :
@@ -159,9 +167,11 @@ const UlStyle = styled.ul`
 const LiStyles = styled.li`
     font-weight: 600;
     font-style: bold;
+
     &::first-letter{
         text-transform: uppercase;
     }
+    
     color:${props =>
         props.color === 'black' ? 'rgba(0, 0, 0, .6)' :
             props.color === 'blue' ? 'rgba(0, 0, 255, .6)' :
@@ -177,6 +187,7 @@ const LiStyles = styled.li`
 
 const NamePokemon = styled.h3`
     font-size: 1.5rem;
+
     color:${props =>
         props.color === 'black' ? 'black' :
             props.color === 'blue' ? 'blue' :
@@ -188,6 +199,7 @@ const NamePokemon = styled.h3`
                                     props.color === 'red' ? 'red' :
                                         props.color === 'yellow' ? '#ffdf00' :
                                             '#DFE1E1'};
+    
     &::first-letter{
         text-transform: uppercase;
     }
@@ -197,6 +209,7 @@ const FooterContainer = styled.footer`
     width: 80%;
     margin: 15px 0;
     border-top: 1px solid #DFE1E1;
+
     &>ul{
         border-top: 1px solid #DFE1E1;
         list-style: none;

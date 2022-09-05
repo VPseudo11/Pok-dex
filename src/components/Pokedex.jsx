@@ -6,19 +6,30 @@ import Pikachu2 from './../assets/Pikachu_2.gif'
 import { useSelector } from 'react-redux'
 import SearchInput from './pokedex/SearchInput'
 import SelectType from './pokedex/SelectType'
+import Pagination from './extras/Pagination'
+import LimitOfPokemons from './extras/LimitOfPokemons'
 
 const Pokedex = () => {
 
     const [pokemons, setPokemons] = useState(null)
     const [pokeSearch, setPokeSearch] = useState(null)
-    const [typeSelect, setTypeSelect] = useState(null)
+    const [typeSelect, setTypeSelect] = useState('All')
+    const [indexOfFirstPokemon, setIndexOfFirstPokemon] = useState(0)
+    const [limitPokemons, setLimitPokemons] = useState(10)
 
     const nameTrainer = useSelector(state => state.nameTrainer)
 
     useEffect(() => {
-        let URL
-        if (pokeSearch) {
-           const url = `https://pokeapi.co/api/v2/pokemon/${pokeSearch}/`
+        if (typeSelect !== 'All') {
+            const URL = `https://pokeapi.co/api/v2/type/${typeSelect}/`
+            axios.get(URL)
+                .then(res => {
+                    const arr = res.data.pokemon.map(e => e.pokemon)
+                    setPokemons({ results: arr });
+                })
+                .catch(err => console.log(err))
+        } else if (pokeSearch) {
+            const url = `https://pokeapi.co/api/v2/pokemon/${pokeSearch}/`
             const obj = {
                 results: [
                     {
@@ -28,12 +39,18 @@ const Pokedex = () => {
             }
             setPokemons(obj)
         } else {
-            URL = `https://pokeapi.co/api/v2/pokemon/`
+            const URL = `https://pokeapi.co/api/v2/pokemon/?offset=${indexOfFirstPokemon}&limit=${limitPokemons}`
             axios.get(URL)
                 .then(res => setPokemons(res.data))
                 .catch((err) => console.log(err))
         }
-    }, [pokeSearch])
+    }, [pokeSearch, typeSelect, indexOfFirstPokemon, limitPokemons])
+
+
+    const paginate = (pageNumber) => {
+        const indexOfLastPokemon = pageNumber * limitPokemons
+        setIndexOfFirstPokemon(indexOfLastPokemon - limitPokemons)
+    }
 
     return (
         <PokedexContainer>
@@ -42,8 +59,11 @@ const Pokedex = () => {
                 <img src={Pikachu2} alt="" />
             </HeaderSection>
             <h2>Welcome {nameTrainer}, here you can find your favorite pokemon</h2>
-            <SelectType setTypeSelect={setTypeSelect} />
-            <SearchInput setPokeSearch={setPokeSearch} />
+            <SearchBar>
+                <SelectType typeSelect={typeSelect} setTypeSelect={setTypeSelect} setPokeSearch={setPokeSearch} />
+                <SearchInput setPokeSearch={setPokeSearch} setTypeSelect={setTypeSelect} />
+                <LimitOfPokemons setLimitPokemons={setLimitPokemons} />
+            </SearchBar>
             <PokemonsContainer>
                 {
                     pokemons?.results.map(item => (
@@ -51,18 +71,28 @@ const Pokedex = () => {
                     ))
                 }
             </PokemonsContainer>
+            <Pagination pokemonsPerPage={limitPokemons} totalPokemons={pokemons?.count} paginate={paginate} />
         </PokedexContainer>
     )
 }
 const PokedexContainer = styled.section`
     max-width: 1200px;
     width: 100%;
+
     &>h2{
         margin: 30px 0;
         font-size: 1rem;
         font-style: bold;
         font-weight: 500;
     }
+`
+
+const SearchBar = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;
+    flex-wrap: wrap;
 `
 
 const PokemonsContainer = styled.div`
@@ -79,6 +109,7 @@ const HeaderSection = styled.header`
     justify-content: space-between;
     align-items: center;
     padding: 0 30px;
+
     &>img{
         width: 150px;
     }
@@ -92,6 +123,7 @@ const TitleStyles = styled.h1`
     border-radius: 30px;
     background-color: #B5331C;
     text-align: center;
+    
     &>span{
         color: #B5331C;
         background-color: #DFE1E1;

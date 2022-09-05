@@ -50,28 +50,31 @@ const Home = () => {
 const HomeContainer = styled.div`
     max-width: 1200px;
     width: 100%;
-    margin: 25% 0;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     background-color: #F8F8F8;
+
     &>h1{
         font-size: 4rem;
         color: #DFE1E1;
+        margin-top: 120px;
         margin-bottom: 60px;
         text-shadow: 3px 3px 3px rgba(0, 0, 0, .3);
         border: 3px solid black;
         border-radius: 30px;
         background-color: #B5331C;
         text-align: center;
+
         &>span{
             color: #B5331C;
             background-color: #DFE1E1;
             border-radius: 27px;
         }
+
         @media (max-width: 768px){
-        font-size: 3.3rem;
+            font-size: 3.3rem;
         }
     }
 `
@@ -105,6 +108,7 @@ const SecondSection = styled.section`
     justify-content: center;
     flex-direction: column;
     margin: 60px 0;
+
     @media (max-width: 768px){
         font-size: .6rem;
     }
@@ -132,16 +136,19 @@ const ButtonContainer = styled.button`
     height: 45px;
     background: transparent;
     border: none;
+
     &>img{
         width: 40px;
         position: absolute;
         top: 0;
         left: 0;
     }
+
     &:hover img{
         opacity: 0;
         transition: all .3s ease;
     }
+
     &>h2{
         position: absolute;
         top: 0;
@@ -155,10 +162,12 @@ const ButtonContainer = styled.button`
         font-size: 1.5rem;
         border-radius: 50%;
         opacity: 0;
+
         &>span{
             color: red;
         }
     }
+    
     &:hover h2{
         opacity: 1;
         transition: all .3s ease;
